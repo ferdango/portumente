@@ -538,7 +538,73 @@ section[id], article[id] { scroll-margin-top: 96px; }
   .js .rec-card.is-active { opacity: 1; transform: none; }
 }
 
-/* ---------- Beneficios ---------- */
+/* ---------- Reforzamiento escolar ---------- */
+.school-grid {
+  display: grid; grid-template-columns: 1.05fr .95fr; align-items: center;
+  gap: clamp(32px, 6vw, 88px);
+  margin-bottom: clamp(36px, 5vw, 56px);
+}
+.school-motto {
+  margin: 0 0 .7em;
+  font-weight: 900; font-size: clamp(1.5rem, 2.8vw, 2.1rem); letter-spacing: -.03em; line-height: 1.15;
+}
+.school-motto span:first-child { color: var(--azul); }
+.school-motto span:last-child {
+  background-image: linear-gradient(var(--amarillo), var(--amarillo));
+  background-repeat: no-repeat; background-position: 0 88%; background-size: 0% 38%;
+  transition: background-size 1s var(--ease-out) .6s;
+}
+.school-motto.is-in span:last-child, html:not(.js) .school-motto span:last-child { background-size: 100% 38%; }
+.school-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 20px; margin-top: 28px; }
+.school-note { margin: 0; font-size: .95rem; color: var(--muted); max-width: 26ch; }
+
+.school-visual { justify-self: center; width: 100%; max-width: 440px; }
+.focus-stage {
+  --p: 0;
+  position: relative; container-type: inline-size;
+  aspect-ratio: 1; border-radius: 40px; overflow: hidden;
+  background:
+    repeating-linear-gradient(180deg, transparent 0 31px, rgba(39, 28, 99, .07) 31px 32px),
+    var(--azul-t);
+  box-shadow: var(--shadow);
+}
+.focus-stage .cap {
+  position: absolute; left: 50%; top: 46%;
+  width: 11cqw; height: 52cqw; border-radius: 99px; background: var(--c);
+  transform:
+    translate(-50%, -50%)
+    translate(calc(var(--ox) + var(--sx) * (1 - var(--p))), calc(var(--sy) * (1 - var(--p))))
+    rotate(calc(20deg + var(--sr) * (1 - var(--p))));
+  transition: transform .6s var(--ease-out);
+  box-shadow: 0 14px 24px -16px rgba(39, 28, 99, .5);
+}
+.focus-stage .cap:nth-child(1) { --c: var(--azul);       --ox: -30cqw; --sx: -4cqw;  --sy: -16cqw; --sr: -95deg; }
+.focus-stage .cap:nth-child(2) { --c: var(--naranja);    --ox: -15cqw; --sx: 12cqw;  --sy: 14cqw;  --sr: 70deg; }
+.focus-stage .cap:nth-child(3) { --c: var(--rosa);       --ox: 0cqw;   --sx: -16cqw; --sy: 6cqw;   --sr: -150deg; }
+.focus-stage .cap:nth-child(4) { --c: var(--amarillo);   --ox: 15cqw;  --sx: 6cqw;   --sy: -20cqw; --sr: 115deg; }
+.focus-stage .cap:nth-child(5) { --c: var(--azul-suave); --ox: 30cqw;  --sx: -8cqw;  --sy: 16cqw;  --sr: -40deg; }
+.focus-book {
+  position: absolute; right: 7cqw; top: 7cqw;
+  display: grid; place-items: center;
+  width: 14cqw; height: 14cqw; border-radius: 50%;
+  background: #fff; color: var(--morado);
+  box-shadow: var(--shadow-sm);
+  transform: scale(calc(.6 + var(--p) * .4)) rotate(calc((1 - var(--p)) * -30deg));
+  transition: transform .6s var(--ease-spring);
+}
+.focus-book .ico { width: 55%; height: 55%; }
+.focus-label {
+  position: absolute; left: 50%; bottom: 7cqw; translate: -50% 0; margin: 0;
+  display: grid; padding: 10px 20px; border-radius: 999px;
+  background: var(--morado); color: #fff; white-space: nowrap;
+  font-size: .98rem; box-shadow: 0 12px 24px -14px rgba(39, 28, 99, .7);
+}
+.focus-label b { grid-area: 1 / 1; text-align: center; font-weight: 800; transition: opacity .4s, transform .5s var(--ease-spring); }
+.focus-label .l2 { color: var(--amarillo); opacity: 0; transform: translateY(8px); }
+.focus-stage.is-ordered .focus-label .l1 { opacity: 0; transform: translateY(-8px); }
+.focus-stage.is-ordered .focus-label .l2 { opacity: 1; transform: none; }
+
+/* ---------- Tarjetas de puntos (antes «Beneficios») ---------- */
 .benefit-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(16px, 2vw, 24px); }
 .benefit {
   position: relative; padding: clamp(28px, 3vw, 36px);
@@ -850,7 +916,8 @@ html.framed body { display: none !important; }
   .hero { min-height: 0; }
   .hero-grid { grid-template-columns: 1fr; }
   .hero-sun { justify-self: center; width: min(88%, 420px); margin-top: 8px; }
-  .familiar-grid, .faq-grid, .contact-grid { grid-template-columns: 1fr; }
+  .familiar-grid, .faq-grid, .contact-grid, .school-grid { grid-template-columns: 1fr; }
+  .school-visual { max-width: 380px; }
   .faq-grid .section-head { position: static; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); row-gap: 36px; }
   .rec-story { grid-template-columns: 1fr; }
@@ -912,6 +979,7 @@ html.framed body { display: none !important; }
   }
   .js .reveal, .js .chat .msg { opacity: 1; transform: var(--final, none); }
   .js .hero-sun .ray { opacity: 1; }
+  .focus-stage { --p: 1; }
 }
 
 /* ---------- Impresión ---------- */

@@ -186,6 +186,7 @@
   var blobs = $$('[data-speed]');
   var fab = $('.fab');
   var hero = $('.hero');
+  var focusStage = $('[data-focus]');
   var contact = $('#contacto');
   var contactVisible = false;
   var menuOpen = false;
@@ -222,6 +223,13 @@
         var offset = (window.innerHeight / 2 - (r.top + r.height / 2)) * speed;
         b.style.translate = '0 ' + offset.toFixed(1) + 'px';
       });
+    }
+    // Reforzamiento: las cápsulas pasan de desordenadas («primero regulo») a ordenadas («luego enseño»).
+    if (focusStage) {
+      var fr = focusStage.getBoundingClientRect();
+      var fp = reduceMotion ? 1 : clamp((window.innerHeight * 0.92 - fr.top) / (window.innerHeight * 0.55), 0, 1);
+      focusStage.style.setProperty('--p', fp.toFixed(3));
+      focusStage.classList.toggle('is-ordered', fp > 0.62);
     }
     updateStep();
     updateNav();
@@ -442,7 +450,12 @@
       if (firstInvalid) { firstInvalid.focus(); return; }
 
       var edadTxt = edad + (edad === 1 ? ' año' : ' años');
-      var lines = ['Hola, deseo más información sobre el taller Verano REC.', 'Soy ' + nombre + '.'];
+      var REFUERZO = 'Reforzamiento escolar';
+      var wantsSchool = intereses.indexOf(REFUERZO) !== -1;
+      var wantsRec = intereses.length === 0 || intereses.some(function (v) { return v !== REFUERZO; });
+      var topic = wantsSchool && wantsRec ? 'el taller Verano REC y el reforzamiento escolar'
+        : wantsSchool ? 'el reforzamiento escolar' : 'el taller Verano REC';
+      var lines = ['Hola, deseo más información sobre ' + topic + '.', 'Soy ' + nombre + '.'];
       lines.push('Mi hijo(a) tiene ' + edadTxt + '.');
       if (intereses.length) lines.push('Me interesa: ' + intereses.join(', ') + '.');
       if (mensaje) lines.push(mensaje);
