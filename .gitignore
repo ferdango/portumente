@@ -1,0 +1,18 @@
+# Sistema
+.DS_Store
+Thumbs.db
+*.swp
+
+# Entornos y herramientas locales (pueden contener rutas o datos de la máquina)
+.claude/
+.vscode/
+.idea/
+node_modules/
+.env
+.env.*
+
+# Archivos fuente de diseño que no deben publicarse
+*.pdf
+*.ai
+*.psd
+*.fig
