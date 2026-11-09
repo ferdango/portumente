@@ -665,7 +665,7 @@ section[id], article[id] { scroll-margin-top: 96px; }
 .benefit p { margin: 0; color: var(--ink-soft); }
 .benefit small { display: block; margin-top: 8px; font-weight: 700; color: var(--morado); }
 
-/* ---------- Guardería ---------- */
+/* ---------- Estimulación temprana ---------- */
 .nursery-wrap { padding-top: 0; }
 .nursery {
   position: relative; overflow: hidden; isolation: isolate;

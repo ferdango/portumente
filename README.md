@@ -7,7 +7,7 @@ Landing page del **taller de verano Verano REC** (Regula · Enseña · Conecta) 
 ## Contenido del taller
 
 - **Fechas:** del 11 de enero al 26 de febrero de 2027
-- **Edades:** 4 a 18 años · guardería + estimulación temprana por las mañanas (1 a 3 años)
+- **Edades:** 4 a 18 años · estimulación temprana por las mañanas (1 a 3 años)
 - **Áreas:** Regula (terapia sensorial) · Enseña (atención y concentración) · Conecta (terapia de conducta)
 - **También:** reforzamiento escolar con el enfoque «Primero regulo, luego enseño» (edades, cursos y horarios por WhatsApp)
 - **Contacto:** WhatsApp 940 399 776 · Instagram @portu_mente · Av. Mariscal Castilla 263, Huacho (frente al colegio Cristo Rey)
