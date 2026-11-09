@@ -43,7 +43,7 @@ GitHub Pages publica automáticamente la rama `master` (carpeta raíz). El archi
 - **Content-Security-Policy estricta** (`default-src 'none'`, scripts y estilos solo del propio sitio, sin código en línea).
 - **Sin terceros al cargar la página:** fuentes y librerías alojadas en el repositorio (no se envía la IP de los visitantes a CDNs ni a Google Fonts).
 - **Mapa con consentimiento:** Google Maps solo se carga cuando la persona pulsa «Ver mapa», dentro de un iframe con `sandbox`.
-- **Formulario sin servidor:** no guarda ni envía datos; solo arma el mensaje y abre WhatsApp. Pide el mínimo de datos (nombre del adulto y edad del menor, sin el nombre del menor) y limpia caracteres de control y de dirección de texto.
+- **Formulario sin servidor:** no guarda ni envía datos; solo arma el mensaje y abre WhatsApp. Pide nombre, celular, edad del menor e interés (Terapias REC, Reforzamiento escolar o Estimulación temprana), sin el nombre del menor, y limpia caracteres de control y de dirección de texto.
 - **Enlaces externos** con `rel="noopener noreferrer"` y política de referer `strict-origin-when-cross-origin`.
 - **Anti-clickjacking** por JavaScript (GitHub Pages no permite enviar `X-Frame-Options`).
 

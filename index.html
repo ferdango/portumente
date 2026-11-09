@@ -27,8 +27,8 @@
 
   <link rel="icon" type="image/svg+xml" href="assets/isotipo-por-tu-mente.svg">
   <link rel="preload" href="fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/styles.css">
-  <script src="js/init.js"></script>
+  <link rel="stylesheet" href="css/styles.css?v=20261109d">
+  <script src="js/init.js?v=20261109d"></script>
 </head>
 <body>
 
@@ -218,14 +218,6 @@
   </div>
 </section>
 
-<!-- ============ MARQUESINA ============ -->
-<div class="marquee" aria-hidden="true">
-  <div class="marquee-track">
-    <span>Regula</span><i class="c-azul"></i><span>Enseña</span><i class="c-rosa"></i><span>Conecta</span><i class="c-amarillo"></i><span>Juego</span><i class="c-naranja"></i><span>Movimiento</span><i class="c-suave"></i><span>Aprendizaje</span><i class="c-azul"></i>
-    <span>Regula</span><i class="c-azul"></i><span>Enseña</span><i class="c-rosa"></i><span>Conecta</span><i class="c-amarillo"></i><span>Juego</span><i class="c-naranja"></i><span>Movimiento</span><i class="c-suave"></i><span>Aprendizaje</span><i class="c-azul"></i>
-  </div>
-</div>
-
 <!-- ============ ¿QUÉ TRABAJAMOS? (REC) ============ -->
 <section class="section rec" id="que-trabajamos">
   <div class="container">
@@ -250,6 +242,8 @@
         </ol>
       </div>
 
+      <div class="rec-pin">
+      <div class="rec-viewport">
       <div class="rec-steps">
         <article class="rec-card card-r" id="regula" data-step="r">
           <span class="mini-tile" aria-hidden="true">R</span>
@@ -277,6 +271,14 @@
           <p class="desc">Habilidades sociales para comunicarse y convivir mejor.</p>
           <p class="for-when"><svg class="ico" aria-hidden="true"><use href="#i-heart"/></svg> Para cuando le cuesta relacionarse con otros.</p>
         </article>
+      </div>
+      </div>
+        <div class="rec-nav" role="group" aria-label="Elegir área">
+          <button type="button" data-step="r" class="c-azul" aria-pressed="true">Regula</button>
+          <button type="button" data-step="e" class="c-rosa" aria-pressed="false">Enseña</button>
+          <button type="button" data-step="c" class="c-amarillo" aria-pressed="false">Conecta</button>
+        </div>
+        <p class="rec-hint" aria-hidden="true">Sigue bajando o desliza para ver la siguiente</p>
       </div>
     </div>
   </div>
@@ -387,24 +389,36 @@
     </header>
     <div class="faq">
       <details class="reveal">
-        <summary>¿Para qué edades es el taller?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary>
-        <div class="faq-a"><p>Verano REC es para niños y adolescentes de <b>4 a 18 años</b>. Para los más pequeños, de <b>1 a 3 años</b>, tenemos guardería + estimulación temprana por las mañanas.</p></div>
+        <summary>¿Qué es Verano REC?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary>
+        <div class="faq-a"><p>Es nuestro taller de verano para niños y adolescentes. A través del juego y el movimiento trabajamos tres áreas: <b>Regula</b> (regulación sensorial), <b>Enseña</b> (atención y hábitos) y <b>Conecta</b> (conducta y vínculos).</p></div>
       </details>
       <details class="reveal" data-d=".05">
-        <summary>¿Cuándo empieza y cuándo termina?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary>
-        <div class="faq-a"><p>Del <b>11 de enero al 26 de febrero de 2027</b>. Escríbenos para conocer los horarios.</p></div>
+        <summary>¿Para qué edades es?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary>
+        <div class="faq-a"><p>Verano REC es para niños y adolescentes de <b>4 a 18 años</b>. Para los más pequeños, de <b>1 a 3 años</b>, tenemos guardería con estimulación temprana por las mañanas.</p></div>
       </details>
       <details class="reveal" data-d=".1">
-        <summary>¿Dónde queda?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary>
-        <div class="faq-a"><p><b>Av. Mariscal Castilla 263, Huacho</b>, frente al colegio Cristo Rey.</p></div>
+        <summary>¿Cuándo empieza y cuánto dura?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary>
+        <div class="faq-a"><p>Empieza el <b>lunes 11 de enero</b> y termina el <b>viernes 26 de febrero de 2027</b>: son 7 semanas de verano.</p></div>
       </details>
       <details class="reveal" data-d=".15">
-        <summary>¿Tienen reforzamiento escolar?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary>
-        <div class="faq-a"><p>Sí. Acompañamos lo que tu hijo(a) aprende en el colegio con nuestro enfoque: <b>primero regulo, luego enseño</b>. Escríbenos por WhatsApp y te contamos edades, cursos y horarios.</p></div>
+        <summary>¿Qué días y en qué horario?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary>
+        <div class="faq-a"><p>Escríbenos por WhatsApp al <b>940 399 776</b> y te contamos los días y el horario.</p></div>
       </details>
       <details class="reveal" data-d=".2">
-        <summary>¿Cuáles son los costos y horarios?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary>
-        <div class="faq-a"><p>Te los enviamos por WhatsApp al <b>940 399 776</b>, junto con toda la información del taller.</p></div>
+        <summary>¿Cuánto cuesta?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary>
+        <div class="faq-a"><p>Te enviamos el costo y toda la información del taller por WhatsApp al <b>940 399 776</b>. Con gusto resolvemos tus dudas.</p></div>
+      </details>
+      <details class="reveal" data-d=".25">
+        <summary>¿Dónde queda?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary>
+        <div class="faq-a"><p>En <b>Av. Mariscal Castilla 263, Huacho</b>, frente al colegio Cristo Rey.</p></div>
+      </details>
+      <details class="reveal" data-d=".3">
+        <summary>¿Cómo lo inscribo?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary>
+        <div class="faq-a"><p>Escríbenos por WhatsApp al <b>940 399 776</b> o completa el formulario de esta página. Te respondemos con toda la información para separar su lugar.</p></div>
+      </details>
+      <details class="reveal" data-d=".35">
+        <summary>¿También tienen reforzamiento escolar?<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary>
+        <div class="faq-a"><p>Sí. Acompañamos lo que tu hijo(a) aprende en el colegio con nuestro enfoque: <b>primero regulo, luego enseño</b>. Escríbenos por WhatsApp y te contamos edades, cursos y horarios.</p></div>
       </details>
     </div>
   </div>
@@ -428,36 +442,40 @@
           <p class="field-error" aria-live="polite"></p>
         </div>
         <div class="field">
+          <label for="f-cel">Celular</label>
+          <input id="f-cel" name="celular" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="15" placeholder="Ej.: 987 654 321" required>
+          <p class="field-error" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
           <label for="f-edad">Edad de tu hijo(a)</label>
           <select id="f-edad" name="edad" required>
-            <option value="">Elige</option>
+            <option value="">Elige la edad</option>
+          </select>
+          <p class="field-error" aria-live="polite"></p>
+        </div>
+        <div class="field">
+          <label for="f-interes">¿Qué te interesa?</label>
+          <select id="f-interes" name="interes" required>
+            <option value="">Elige una opción</option>
+            <option value="Terapias REC">Terapias REC</option>
+            <option value="Reforzamiento escolar">Reforzamiento escolar</option>
+            <option value="Estimulación temprana">Estimulación temprana</option>
           </select>
           <p class="field-error" aria-live="polite"></p>
         </div>
       </div>
-      <p class="age-hint" aria-live="polite" hidden></p>
-
-      <fieldset class="field">
-        <legend>¿Qué te interesa? <span class="opt">puedes elegir varios</span></legend>
-        <div class="chips">
-          <label class="chip c-azul"><input type="checkbox" name="interes" value="Regula (terapia sensorial)"><span><b>R</b> Regula</span></label>
-          <label class="chip c-rosa"><input type="checkbox" name="interes" value="Enseña (atención y concentración)"><span><b>E</b> Enseña</span></label>
-          <label class="chip c-amarillo"><input type="checkbox" name="interes" value="Conecta (terapia de conducta)"><span><b>C</b> Conecta</span></label>
-          <label class="chip c-suave"><input type="checkbox" name="interes" value="Guardería + estimulación temprana (1 a 3 años)"><span>Guardería</span></label>
-          <label class="chip c-azul"><input type="checkbox" name="interes" value="Reforzamiento escolar"><span>Reforzamiento escolar</span></label>
-        </div>
-      </fieldset>
 
       <div class="field">
         <label for="f-msg">Mensaje <span class="opt">opcional</span></label>
-        <textarea id="f-msg" name="mensaje" rows="3" maxlength="500" placeholder="Cuéntanos lo que quieras: dudas, horarios, lo que le gustaría trabajar…"></textarea>
-        <p class="char-count" aria-live="polite"><span>0</span>/500</p>
+        <textarea id="f-msg" name="mensaje" rows="3" maxlength="500" placeholder="Cuéntanos lo que quieras saber"></textarea>
       </div>
 
       <button class="btn btn-whatsapp btn-block btn-lg" type="submit">
         <svg class="ico" aria-hidden="true"><use href="#i-whatsapp"/></svg> Enviar por WhatsApp
       </button>
-      <p class="privacy"><svg class="ico" aria-hidden="true"><use href="#i-lock"/></svg> Esta página no guarda ni envía tus datos a ningún servidor: solo arma el mensaje y lo abre en tu WhatsApp para que tú decidas enviarlo.</p>
     </form>
 
     <aside class="contact-card reveal" data-d=".1" aria-label="Datos de contacto">
@@ -521,6 +539,6 @@
 </a>
 
 <script src="js/vendor/lenis.min.js" defer></script>
-<script src="js/main.js" defer></script>
+<script src="js/main.js?v=20261109d" defer></script>
 </body>
 </html>

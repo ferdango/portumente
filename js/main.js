@@ -64,6 +64,11 @@
     if (target === null) return;
     e.preventDefault();
     closeMenu(false);
+    // En móvil, R/E/C del hero llevan a su tarjeta dentro del slider.
+    if (target !== 0 && target.classList.contains('rec-card') && isSlider()) {
+      scrollToStep(STEPS.indexOf(target.getAttribute('data-step')));
+      return;
+    }
     scrollToTarget(target);
     if (target !== 0) {
       if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
@@ -139,28 +144,79 @@
     counters.forEach(function (el) { countIO.observe(el); });
   }
 
-  /* ---------- Historia REC (sticky) ---------- */
+  /* ---------- ¿Qué trabajamos? (REC) ----------
+     Escritorio: letra fija a la izquierda y tarjetas que pasan al hacer scroll.
+     Móvil: la sección se fija y el scroll avanza el slider de una tarjeta en una. */
   var stage = $('.rec-stage');
+  var recStory = $('.rec-story');
+  var recPin = $('.rec-pin');
+  var recTrack = $('.rec-steps');
   var recCards = $$('.rec-card');
   var recDots = $$('.rec-dots li');
+  var recNav = $$('.rec-nav button');
+  var STEPS = recCards.map(function (c) { return c.getAttribute('data-step'); });
+  var sliderMQ = window.matchMedia('(max-width: 900px)');
+  // `top` real de .rec-pin en móvil (92 px, u 84 px en pantallas bajas).
+  function pinTop() { return recPin ? parseFloat(getComputedStyle(recPin).top) || 92 : 92; }
+  function isSlider() { return sliderMQ.matches && !!recStory && !!recPin; }
+
   function setStep(step) {
     if (stage) stage.setAttribute('data-active', step);
+    if (recTrack) recTrack.style.setProperty('--i', String(Math.max(0, STEPS.indexOf(step))));
     recDots.forEach(function (li) { li.classList.toggle('is-active', li.getAttribute('data-step') === step); });
     recCards.forEach(function (c) { c.classList.toggle('is-active', c.getAttribute('data-step') === step); });
+    recNav.forEach(function (b) {
+      var on = b.getAttribute('data-step') === step;
+      b.classList.toggle('is-active', on);
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
   }
   var currentStep = '';
   // Se calcula según la posición real (fiable aunque se salte de golpe con el menú o el teclado).
   function updateStep() {
     if (!recCards.length) return;
-    var mid = window.innerHeight / 2, best = recCards[0], bestDist = Infinity;
-    recCards.forEach(function (c) {
-      var r = c.getBoundingClientRect();
-      var dist = r.top <= mid && r.bottom >= mid ? 0 : Math.min(Math.abs(r.top - mid), Math.abs(r.bottom - mid));
-      if (dist < bestDist) { bestDist = dist; best = c; }
-    });
-    var step = best.getAttribute('data-step');
+    var step;
+    if (isSlider()) {
+      var r = recStory.getBoundingClientRect();
+      var dist = r.height - recPin.offsetHeight;
+      var p = dist > 0 ? clamp((pinTop() - r.top) / dist, 0, 0.9999) : 0;
+      step = STEPS[Math.floor(p * STEPS.length)];
+    } else {
+      var mid = window.innerHeight / 2, best = recCards[0], bestDist = Infinity;
+      recCards.forEach(function (c) {
+        var cr = c.getBoundingClientRect();
+        var d = cr.top <= mid && cr.bottom >= mid ? 0 : Math.min(Math.abs(cr.top - mid), Math.abs(cr.bottom - mid));
+        if (d < bestDist) { bestDist = d; best = c; }
+      });
+      step = best.getAttribute('data-step');
+    }
     if (step !== currentStep) { currentStep = step; setStep(step); }
   }
+
+  // Lleva el scroll al tramo que muestra la tarjeta `i` del slider móvil.
+  function scrollToStep(i) {
+    if (!isSlider() || i < 0 || i >= STEPS.length) return;
+    var r = recStory.getBoundingClientRect();
+    var dist = r.height - recPin.offsetHeight;
+    var y = window.scrollY + r.top - pinTop() + dist * ((i + 0.5) / STEPS.length);
+    if (lenis) lenis.scrollTo(y); else window.scrollTo({ top: y, behavior: reduceMotion ? 'auto' : 'smooth' });
+  }
+  recNav.forEach(function (b) {
+    b.addEventListener('click', function () { scrollToStep(STEPS.indexOf(b.getAttribute('data-step'))); });
+  });
+  // Deslizar con el dedo también avanza o retrocede una tarjeta.
+  if (recPin) {
+    var tx = 0, ty = 0;
+    recPin.addEventListener('touchstart', function (e) { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
+    recPin.addEventListener('touchend', function (e) {
+      if (!isSlider()) return;
+      var dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
+      if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.3) {
+        scrollToStep(STEPS.indexOf(currentStep) + (dx < 0 ? 1 : -1));
+      }
+    }, { passive: true });
+  }
+  sliderMQ.addEventListener && sliderMQ.addEventListener('change', function () { currentStep = ''; updateStep(); });
 
   /* ---------- Enlace activo del menú ---------- */
   var navLinks = $$('.main-nav a');
@@ -190,7 +246,7 @@
   var contact = $('#contacto');
   var contactVisible = false;
   var menuOpen = false;
-  var lastY = window.scrollY, velocity = 0, direction = 1, ticking = false;
+  var ticking = false;
 
   if ('IntersectionObserver' in window && contact) {
     new IntersectionObserver(function (entries) {
@@ -208,10 +264,6 @@
   function onScroll() {
     var y = window.scrollY;
     var max = Math.max(1, root.scrollHeight - window.innerHeight);
-    var delta = y - lastY;
-    velocity = delta;
-    if (delta !== 0) direction = delta > 0 ? 1 : -1;
-    lastY = y;
 
     if (progress) progress.style.transform = 'scaleX(' + (y / max).toFixed(4) + ')';
     if (header) header.classList.toggle('is-scrolled', y > 40);
@@ -240,34 +292,6 @@
     if (!ticking) { ticking = true; requestAnimationFrame(onScroll); }
   }, { passive: true });
   onScroll();
-
-  /* ---------- Marquesina (reacciona a la velocidad del scroll) ---------- */
-  var track = $('.marquee-track');
-  if (track && !reduceMotion) {
-    var mx = 0, half = 0, prev = performance.now(), running = false;
-    var measure = function () { half = track.scrollWidth / 2; };
-    measure();
-    window.addEventListener('resize', measure, { passive: true });
-    var loop = function (t) {
-      var dt = Math.min(0.05, (t - prev) / 1000); prev = t;
-      var boost = Math.min(Math.abs(velocity) * 0.6, 14);
-      velocity *= 0.9;
-      mx -= direction * (60 * dt + boost);
-      if (half > 0) {
-        if (mx <= -half) mx += half;
-        if (mx > 0) mx -= half;
-      }
-      track.style.transform = 'translate3d(' + mx.toFixed(2) + 'px,0,0)';
-      if (running) requestAnimationFrame(loop);
-    };
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(function (entries) {
-        var vis = entries[0].isIntersecting;
-        if (vis && !running) { running = true; prev = performance.now(); requestAnimationFrame(loop); }
-        else if (!vis) running = false;
-      }).observe(track.parentElement);
-    }
-  }
 
   /* ---------- Sol del hero: sigue suavemente al puntero ---------- */
   var sun = $('.sun');
@@ -383,13 +407,17 @@
   var form = $('#form-wa');
   if (form) {
     var nameIn = $('#f-nombre', form);
+    var phoneIn = $('#f-cel', form);
     var ageSel = $('#f-edad', form);
+    var intSel = $('#f-interes', form);
     var msgIn = $('#f-msg', form);
-    var hint = $('.age-hint', form);
-    var counter = $('.char-count span', form);
-    var nurseryChip = $('input[value^="Guardería"]', form);
     var submitBtn = $('button[type="submit"]', form);
-    var ALLOWED_INTERESTS = $$('input[name="interes"]', form).map(function (i) { return i.value; });
+    // Opciones permitidas y cómo se nombran en el mensaje.
+    var TOPICS = {
+      'Terapias REC': 'las terapias de Verano REC',
+      'Reforzamiento escolar': 'el reforzamiento escolar',
+      'Estimulación temprana': 'la estimulación temprana'
+    };
 
     for (var age = 1; age <= 18; age++) {
       var opt = doc.createElement('option');
@@ -399,15 +427,23 @@
     }
 
     // Limpia caracteres de control y de dirección de texto (evita mensajes manipulados).
+    var CONTROL_CHARS = /[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F\u200B-\u200F\u202A-\u202E\u2066-\u2069\uFEFF]/g;
     var sanitize = function (value, max) {
       return String(value || '')
         .normalize('NFC')
-        .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F​-‏‪-‮⁦-⁩﻿]/g, '')
+        .replace(CONTROL_CHARS, '')
         .replace(/[ \t]+/g, ' ')
         .trim()
         .slice(0, max);
     };
     var oneLine = function (value, max) { return sanitize(value, max).replace(/[\r\n]+/g, ' '); };
+
+    // Celular peruano: 9 dígitos que empiezan con 9 (acepta +51 y espacios).
+    var normalizePhone = function (value) {
+      var digits = String(value || '').replace(/\D/g, '');
+      if (digits.length === 11 && digits.indexOf('51') === 0) digits = digits.slice(2);
+      return /^9\d{8}$/.test(digits) ? digits : '';
+    };
 
     var setError = function (input, text) {
       var field = input.closest('.field');
@@ -417,52 +453,47 @@
       input.setAttribute('aria-invalid', text ? 'true' : 'false');
     };
 
+    nameIn.addEventListener('input', function () { if (nameIn.value.trim().length >= 2) setError(nameIn, ''); });
+    phoneIn.addEventListener('input', function () { if (normalizePhone(phoneIn.value)) setError(phoneIn, ''); });
+    intSel.addEventListener('change', function () { setError(intSel, ''); });
     ageSel.addEventListener('change', function () {
       setError(ageSel, '');
+      // Si es de 1 a 3 años y aún no eligió, sugerimos estimulación temprana.
       var a = parseInt(ageSel.value, 10);
-      if (!a) { hint.hidden = true; return; }
-      hint.hidden = false;
-      if (a <= 3) {
-        hint.textContent = 'Para niños de 1 a 3 años tenemos guardería + estimulación temprana por las mañanas. 🌱';
-        if (nurseryChip && !nurseryChip.checked) nurseryChip.checked = true;
-      } else {
-        hint.textContent = '¡Genial! Verano REC es para niños y adolescentes de 4 a 18 años. ☀️';
-        if (nurseryChip && nurseryChip.checked) nurseryChip.checked = false;
-      }
+      if (a >= 1 && a <= 3 && !intSel.value) intSel.value = 'Estimulación temprana';
     });
-    nameIn.addEventListener('input', function () { if (nameIn.value.trim().length >= 2) setError(nameIn, ''); });
-    msgIn.addEventListener('input', function () { if (counter) counter.textContent = String(msgIn.value.length); });
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var nombre = oneLine(nameIn.value, 60);
+      var celular = normalizePhone(phoneIn.value);
       var edad = parseInt(ageSel.value, 10);
+      var interes = intSel.value;
       var mensaje = sanitize(msgIn.value, 500);
-      var intereses = $$('input[name="interes"]:checked', form)
-        .map(function (i) { return i.value; })
-        .filter(function (v) { return ALLOWED_INTERESTS.indexOf(v) !== -1; });
 
-      var firstInvalid = null;
-      if (nombre.length < 2) { setError(nameIn, 'Cuéntanos tu nombre, por favor.'); firstInvalid = firstInvalid || nameIn; }
-      else setError(nameIn, '');
-      if (!(edad >= 1 && edad <= 18)) { setError(ageSel, 'Elige la edad de tu hijo(a).'); firstInvalid = firstInvalid || ageSel; }
-      else setError(ageSel, '');
-      if (firstInvalid) { firstInvalid.focus(); return; }
+      var invalid = [];
+      setError(nameIn, nombre.length < 2 ? 'Escribe tu nombre, por favor.' : '');
+      if (nombre.length < 2) invalid.push(nameIn);
+      setError(phoneIn, celular ? '' : 'Escribe un celular de 9 dígitos (ej.: 987 654 321).');
+      if (!celular) invalid.push(phoneIn);
+      setError(ageSel, edad >= 1 && edad <= 18 ? '' : 'Elige la edad de tu hijo(a).');
+      if (!(edad >= 1 && edad <= 18)) invalid.push(ageSel);
+      var validTopic = Object.prototype.hasOwnProperty.call(TOPICS, interes);
+      setError(intSel, validTopic ? '' : 'Elige qué te interesa.');
+      if (!validTopic) invalid.push(intSel);
+      if (invalid.length) { invalid[0].focus(); return; }
 
       var edadTxt = edad + (edad === 1 ? ' año' : ' años');
-      var REFUERZO = 'Reforzamiento escolar';
-      var wantsSchool = intereses.indexOf(REFUERZO) !== -1;
-      var wantsRec = intereses.length === 0 || intereses.some(function (v) { return v !== REFUERZO; });
-      var topic = wantsSchool && wantsRec ? 'el taller Verano REC y el reforzamiento escolar'
-        : wantsSchool ? 'el reforzamiento escolar' : 'el taller Verano REC';
-      var lines = ['Hola, deseo más información sobre ' + topic + '.', 'Soy ' + nombre + '.'];
-      lines.push('Mi hijo(a) tiene ' + edadTxt + '.');
-      if (intereses.length) lines.push('Me interesa: ' + intereses.join(', ') + '.');
+      var celTxt = celular.replace(/(\d{3})(\d{3})(\d{3})/, '$1 $2 $3');
+      var lines = [
+        'Hola, deseo más información sobre ' + TOPICS[interes] + '.',
+        'Soy ' + nombre + ' y mi celular es ' + celTxt + '.',
+        'Mi hijo(a) tiene ' + edadTxt + '.'
+      ];
       if (mensaje) lines.push(mensaje);
 
-      var url = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(lines.join('\n'));
       var link = doc.createElement('a');
-      link.href = url;
+      link.href = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(lines.join('\n'));
       link.target = '_blank';
       link.rel = 'noopener noreferrer';
       doc.body.appendChild(link);
