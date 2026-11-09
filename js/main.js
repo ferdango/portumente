@@ -429,7 +429,7 @@
 
     // Rangos de edad permitidos (deben coincidir con las opciones del HTML).
     var AGES = {
-      '1-3': 'entre 1 y 3 años',
+      '8m-3': 'entre 8 meses y 3 años',
       '4-8': 'entre 4 y 8 años',
       '9-12': 'entre 9 y 12 años',
       '13-18': 'entre 13 y 18 años'
@@ -467,8 +467,8 @@
     intSel.addEventListener('change', function () { setError(intSel, ''); });
     ageSel.addEventListener('change', function () {
       setError(ageSel, '');
-      // Si es de 1 a 3 años y aún no eligió, sugerimos estimulación temprana.
-      if (ageSel.value === '1-3' && !intSel.value) intSel.value = 'Estimulación temprana';
+      // Si es menor de 4 años y aún no eligió, sugerimos estimulación temprana.
+      if (ageSel.value === '8m-3' && !intSel.value) intSel.value = 'Estimulación temprana';
     });
 
     form.addEventListener('submit', function (e) {

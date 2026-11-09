@@ -865,6 +865,16 @@ section[id], article[id] { scroll-margin-top: 96px; }
 }
 .footer-bottom p { margin: 0; }
 .to-top { color: var(--amarillo); font-weight: 700; text-decoration: none; }
+/* Crédito de diseño: discreto, se ilumina al pasar el cursor */
+.made-by {
+  display: inline-flex; align-items: center; gap: 8px;
+  color: #fff; text-decoration: none; font-size: .82rem;
+  opacity: .62; transition: opacity .25s;
+}
+/* top: alinea la línea base de «Wuality» con la del texto */
+.made-by img { display: block; position: relative; top: -1.5px; width: auto; height: 19px; transition: transform .35s var(--ease-spring); }
+.made-by:hover, .made-by:focus-visible { opacity: 1; }
+.made-by:hover img { transform: translateY(-1px) scale(1.04); }
 
 /* ---------- Botón flotante ---------- */
 .fab {
