@@ -269,7 +269,8 @@ section[id], article[id] { scroll-margin-top: 96px; }
 .mobile-menu nav a {
   display: flex; align-items: center; gap: 16px;
   font-weight: 900; font-size: clamp(1.9rem, 7vw, 2.6rem); letter-spacing: -.03em;
-  text-decoration: none; padding: 6px 0;
+  line-height: 1.08; /* compacto cuando un ítem ocupa dos líneas */
+  text-decoration: none; padding: 10px 0;
   opacity: 0; transform: translateX(-24px);
   transition: opacity .5s var(--ease-out), transform .6s var(--ease-spring);
 }
