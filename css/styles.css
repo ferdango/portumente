@@ -848,6 +848,8 @@ section[id], article[id] { scroll-margin-top: 96px; }
 }
 .footer-nav a:hover, .footer-contact a:hover { opacity: 1; transform: translateX(4px); }
 .footer-contact .ico { color: var(--rosa); }
+.footer-contact .footer-address { align-items: flex-start; line-height: 1.45; }
+.footer-address .ico { margin-top: 2px; }
 .footer-bottom {
   display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px;
   margin-top: 48px; padding-top: 22px;

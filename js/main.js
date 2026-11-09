@@ -244,7 +244,8 @@
   var hero = $('.hero');
   var focusStage = $('[data-focus]');
   var contact = $('#contacto');
-  var contactVisible = false;
+  var footer = $('.site-footer');
+  var contactVisible = false, footerVisible = false;
   var menuOpen = false;
   var ticking = false;
 
@@ -254,10 +255,17 @@
       updateFab();
     }, { threshold: 0.25 }).observe(contact);
   }
+  // En el pie el botón flotante taparía «Volver arriba»: se oculta.
+  if ('IntersectionObserver' in window && footer) {
+    new IntersectionObserver(function (entries) {
+      footerVisible = entries[0].isIntersecting;
+      updateFab();
+    }).observe(footer);
+  }
 
   function updateFab() {
     if (!fab || !hero) return;
-    var show = window.scrollY > hero.offsetHeight * 0.7 && !contactVisible && !menuOpen;
+    var show = window.scrollY > hero.offsetHeight * 0.7 && !contactVisible && !footerVisible && !menuOpen;
     fab.classList.toggle('is-visible', show);
   }
 
