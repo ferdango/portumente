@@ -192,7 +192,7 @@ section[id], article[id] { scroll-margin-top: 96px; }
 .site-header { position: fixed; inset: 0 0 auto; z-index: 50; pointer-events: none; }
 .header-inner {
   pointer-events: auto;
-  display: flex; align-items: center; gap: 28px;
+  display: flex; align-items: center; gap: 20px;
   max-width: 1200px;
   margin: 0 auto;
   padding: 18px clamp(16px, 4vw, 40px);
@@ -212,12 +212,12 @@ section[id], article[id] { scroll-margin-top: 96px; }
 
 .main-nav { display: flex; gap: 4px; margin-left: auto; }
 .main-nav a {
-  position: relative; padding: 10px 14px; border-radius: 999px;
-  font-weight: 600; font-size: .98rem; text-decoration: none; color: var(--ink);
+  position: relative; padding: 10px 11px; border-radius: 999px;
+  font-weight: 600; font-size: .95rem; text-decoration: none; color: var(--ink); white-space: nowrap;
   transition: background-color .25s, color .25s;
 }
 .main-nav a::after {
-  content: ""; position: absolute; left: 14px; right: 14px; bottom: 5px; height: 3px; border-radius: 3px;
+  content: ""; position: absolute; left: 11px; right: 11px; bottom: 5px; height: 3px; border-radius: 3px;
   background: var(--azul); transform: scaleX(0); transform-origin: left; transition: transform .35s var(--ease-out);
 }
 .main-nav a:hover::after, .main-nav a.is-current::after { transform: scaleX(1); }
@@ -910,7 +910,7 @@ html.framed body { display: none !important; }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
 /* ---------- Responsive ---------- */
-@media (max-width: 1100px) {
+@media (max-width: 1240px) {
   .main-nav { display: none; }
   .menu-toggle { display: block; }
   .header-cta { margin-left: auto; }

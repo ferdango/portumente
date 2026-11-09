@@ -360,7 +360,7 @@
   if (toggle && menu) {
     toggle.addEventListener('click', function () { if (menuOpen) closeMenu(true); else openMenu(); });
     doc.addEventListener('keydown', function (e) { if (e.key === 'Escape' && menuOpen) closeMenu(true); });
-    window.addEventListener('resize', function () { if (window.innerWidth > 1100 && menuOpen) closeMenu(false); }, { passive: true });
+    window.addEventListener('resize', function () { if (window.innerWidth > 1240 && menuOpen) closeMenu(false); }, { passive: true });
     $$('a:not([href^="#"])', menu).forEach(function (a) { a.addEventListener('click', function () { closeMenu(false); }); });
   }
 
@@ -419,12 +419,13 @@
       'Estimulación temprana': 'la estimulación temprana'
     };
 
-    for (var age = 1; age <= 18; age++) {
-      var opt = doc.createElement('option');
-      opt.value = String(age);
-      opt.textContent = age + (age === 1 ? ' año' : ' años');
-      ageSel.appendChild(opt);
-    }
+    // Rangos de edad permitidos (deben coincidir con las opciones del HTML).
+    var AGES = {
+      '1-3': 'entre 1 y 3 años',
+      '4-8': 'entre 4 y 8 años',
+      '9-12': 'entre 9 y 12 años',
+      '13-18': 'entre 13 y 18 años'
+    };
 
     // Limpia caracteres de control y de dirección de texto (evita mensajes manipulados).
     var CONTROL_CHARS = /[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F\u200B-\u200F\u202A-\u202E\u2066-\u2069\uFEFF]/g;
@@ -459,15 +460,15 @@
     ageSel.addEventListener('change', function () {
       setError(ageSel, '');
       // Si es de 1 a 3 años y aún no eligió, sugerimos estimulación temprana.
-      var a = parseInt(ageSel.value, 10);
-      if (a >= 1 && a <= 3 && !intSel.value) intSel.value = 'Estimulación temprana';
+      if (ageSel.value === '1-3' && !intSel.value) intSel.value = 'Estimulación temprana';
     });
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var nombre = oneLine(nameIn.value, 60);
       var celular = normalizePhone(phoneIn.value);
-      var edad = parseInt(ageSel.value, 10);
+      var edad = ageSel.value;
+      var validAge = Object.prototype.hasOwnProperty.call(AGES, edad);
       var interes = intSel.value;
       var mensaje = sanitize(msgIn.value, 500);
 
@@ -476,19 +477,18 @@
       if (nombre.length < 2) invalid.push(nameIn);
       setError(phoneIn, celular ? '' : 'Escribe un celular de 9 dígitos (ej.: 987 654 321).');
       if (!celular) invalid.push(phoneIn);
-      setError(ageSel, edad >= 1 && edad <= 18 ? '' : 'Elige la edad de tu hijo(a).');
-      if (!(edad >= 1 && edad <= 18)) invalid.push(ageSel);
+      setError(ageSel, validAge ? '' : 'Elige la edad de tu hijo(a).');
+      if (!validAge) invalid.push(ageSel);
       var validTopic = Object.prototype.hasOwnProperty.call(TOPICS, interes);
       setError(intSel, validTopic ? '' : 'Elige qué te interesa.');
       if (!validTopic) invalid.push(intSel);
       if (invalid.length) { invalid[0].focus(); return; }
 
-      var edadTxt = edad + (edad === 1 ? ' año' : ' años');
       var celTxt = celular.replace(/(\d{3})(\d{3})(\d{3})/, '$1 $2 $3');
       var lines = [
         'Hola, deseo más información sobre ' + TOPICS[interes] + '.',
         'Soy ' + nombre + ' y mi celular es ' + celTxt + '.',
-        'Mi hijo(a) tiene ' + edadTxt + '.'
+        'Mi hijo(a) tiene ' + AGES[edad] + '.'
       ];
       if (mensaje) lines.push(mensaje);
 
